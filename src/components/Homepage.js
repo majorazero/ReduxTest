@@ -1,22 +1,15 @@
 import React, {Component} from "react";
-import axios from "axios";
+import {connect} from "react-redux";
+import {fetchPosts} from "../actions/postActions";
 
 class Homepage extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      post: []
-    };
-  }
 
   componentDidMount = () => {
-    axios.get("https://jsonplaceholder.typicode.com/posts").then((res)=>{
-      this.setState({post:res.data});
-    })
+    this.props.fetchPosts();
   }
 
   render(){
-    const items = this.state.post.map(item => {
+    const items = this.props.posts.map(item => {
       return (
         <div key={item.id}>
           <h1>{item.title}</h1>
@@ -24,6 +17,7 @@ class Homepage extends Component {
         </div>
       );
     })
+
     return(
       <div>
         <h1>Homepage</h1>
@@ -33,4 +27,8 @@ class Homepage extends Component {
   }
 }
 
-export default Homepage;
+const mapStateToProps = state => ({
+  posts: state.posts.items //refer to root reducer as to why we named this posts
+})
+
+export default connect(mapStateToProps,{fetchPosts})(Homepage);

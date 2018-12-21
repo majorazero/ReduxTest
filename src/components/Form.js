@@ -10,14 +10,19 @@ class Form extends Component {
   }
 
   onChange = (event) => {
-     this.setState({[event.target.name] : [event.target.value]});
+     this.setState({[event.target.name] : event.target.value});
+  }
+
+  onSubmit = (event) => {
+    event.preventDefault();
+    console.log(this.state);
   }
 
   render(){
     return(
       <div>
         <h1>Form</h1>
-        <form>
+        <form onSubmit={this.onSubmit}>
           <div>
             <label>Title</label>
             <input onChange={this.onChange} type="text" name="formTitle" />
