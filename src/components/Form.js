@@ -1,11 +1,15 @@
 import React, {Component} from 'react';
+import PropTypes from "prop-types";
+import {connect} from "react-redux";
+import {createPost} from "../actions/postActions";
 
 class Form extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      formTitle: "",
-      formBody: ""
+      title: "",
+      body: "",
+      id: ""
     }
   }
 
@@ -15,7 +19,11 @@ class Form extends Component {
 
   onSubmit = (event) => {
     event.preventDefault();
-    console.log(this.state);
+    this.props.createPost({
+      title: this.state.title,
+      body: this.state.body,
+      id: this.state.title+this.state.body
+    });
   }
 
   render(){
@@ -25,12 +33,12 @@ class Form extends Component {
         <form onSubmit={this.onSubmit}>
           <div>
             <label>Title</label>
-            <input onChange={this.onChange} type="text" name="formTitle" />
+            <input onChange={this.onChange} type="text" name="title" />
           </div>
           <p />
           <div>
             <label>Body</label>
-            <textarea onChange={this.onChange} name="formBody" />
+            <textarea onChange={this.onChange} name="body" />
           </div>
           <button type="submit">Submit</button>
         </form>
@@ -39,4 +47,8 @@ class Form extends Component {
   }
 }
 
-export default Form;
+Form.propTypes = {
+  createPost: PropTypes.func.isRequired
+};
+
+export default connect(null,{createPost})(Form);
